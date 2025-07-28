@@ -64,4 +64,4 @@ http_adapter = HTTPAdapter(
 app.include_router(http_adapter.router)
 
 # Execute the application
-# uvicorn: uvicorn main:app --reload
+# uvicorn: uvicorn main:app --reload --port 7999
