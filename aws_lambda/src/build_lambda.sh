@@ -1,14 +1,15 @@
 #!/bin/bash
 echo "Started executing $0"
 
-# Preparação da pasta
+# Prepare build folder
+cd aws_lambda/src
 mkdir -p package
-pip install -r requirements.txt --target package/
-cp requirements.txt package/
+pip install -r ../requirements.txt --target package/
+cp ../requirements.txt package/
 cp lambda_function.py package/
 cd package
 
-# Compactação com fallback
+# Generate zip file with fallback
 if command -v zip &> /dev/null; then
   echo "Usando o comando zip..."
   zip -r ../builded_lambda.zip .
@@ -27,5 +28,5 @@ else
   fi
 fi
 
-cd ..
+cd ../..
 echo "Finished executing $0"

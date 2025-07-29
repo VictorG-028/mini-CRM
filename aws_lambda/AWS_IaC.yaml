@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Lambda triggered every 5 minutes via EventBridge.
+
+Resources:
+
+  send-cupom-emails-lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: send-periodicaly-discount-emails
+      Runtime: python3.12
+      Handler: lambda_function.lambda_handler
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              print("Hello from Lambda")
+      Timeout: 10
+      MemorySize: 128
+      Role: !GetAtt lambda-execution-role.Arn
+
+  lambda-execution-role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: lambda-send-discount-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaBasicExecution
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+
+  event-invoke-permission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref send-cupom-emails-lambda
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt periodically-email-trigger-rule.Arn
+
+  periodically-email-trigger-rule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: periodically-email-trigger-rule
+      ScheduleExpression: 0 5 2 * * # 8:00am UTC-3, 2nd day of month
+      State: ENABLED
+      Targets:
+        - Id: SendDiscountEmailsTarget
+          Arn: !GetAtt send-cupom-emails-lambda.Arn

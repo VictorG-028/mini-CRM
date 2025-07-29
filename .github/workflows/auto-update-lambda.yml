@@ -1,0 +1,42 @@
+name: Auto build and deploy lambda code to AWS
+
+# on:
+#   push:
+#     branches: [master]
+#     paths:
+#       - 'aws_lambda/src/**'
+#       - 'aws_lambda/requirements.txt'
+#       - 'aws_lambda/src/lambda_function.py'
+#       - '.github/workflows/auto-update-lambda.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies and zip Lambda
+        run: |
+          pip install -r aws_lambda/requirements.txt -t package/
+          cp aws_lambda/src/lambda_function.py package/
+          cd aws_lambda/src
+          mkdir -p package
+          cd package
+          zip -r ../builded_lambda.zip .
+
+      - name: Update Lambda code on AWS
+        run: |
+          aws lambda update-function-code \
+            --function-name send-periodicaly-discount-emails \
+            --zip-file fileb://builded_lambda.zip \
+            --region eu-north-1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
