@@ -4,6 +4,7 @@ echo "Started executing $0"
 # Preparação da pasta
 mkdir -p package
 pip install -r requirements.txt --target package/
+cp requirements.txt package/
 cp lambda_function.py package/
 cd package
 
