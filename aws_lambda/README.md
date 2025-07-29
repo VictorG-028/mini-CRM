@@ -9,7 +9,7 @@
 # Como subir a infra na AWS
 
 1. Baixe a AWS CLI (`choco install awscli -y`)
-2. Faça login local no seu usuário IAM
+2. Execute `aws configure` e faça login com usuário IAM
 3. Verifique a região da AWS desejada e execute o comando abaixo
 ```bash
 aws cloudformation deploy \
@@ -25,6 +25,11 @@ aws cloudformation deploy \
 
 1. Garanta que o conda está ativado em um ambiente com permissão para baixar 
 pacotes ou não utilize nenhum gerenciador de ambientes virtuais python.
+
+```bash
+# Dica: esse comando faz o conda não iniciar automaticamente no terminal
+conda config --set auto_activate_base false
+```
 
 2. [<u>opcional para windows e obrigatório para ambiente Linux</u>] baixe o binário ´zip´ usando Chocolatey (´choco install zip´) ou sudo (´sudo apt install zip´) e 
 garanta que o caminho para o binário está na string **path** das 
