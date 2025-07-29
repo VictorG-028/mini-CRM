@@ -22,3 +22,6 @@ Troque `<seu_usuario>` pelo usuário real.
 flutter install --use-application-binary="C:\Users\<seu_usuario>\Desktop\mini-CRM\register_user_screens\build\ap
 p\outputs\flutter-apk\app-release.apk"
 ```
+
+<img src="../documentation_images/flutter_app_running_in_old_phones_draw.jpeg" alt="Telefones (14,10,6) executando apps" width="256" />
+<!-- <img src="../documentation_images/flutter_app_running_in_old_phones.jpeg" alt="Telefones (14,10,6) executando apps" width="256" /> -->
