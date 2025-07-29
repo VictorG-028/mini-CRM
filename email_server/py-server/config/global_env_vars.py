@@ -54,6 +54,7 @@ def _convert_to_bool(value: str) -> bool:
 def _convert_to_int(value: str)-> int:
     return int(value)
 
+SERVER_PORT = _convert_to_int(os.environ.get('SERVER_PORT', 8000))
 DATABASE_TYPE = os.environ.get('DATABASE_TYPE', 'supabase') # mongodb or supabase
 EMAIL_SENDER = os.environ.get('EMAIL_SENDER', 'espaco.pamela@gmail.com.br')
 IS_PROD = _convert_to_bool(os.environ.get('IS_PROD', True))
