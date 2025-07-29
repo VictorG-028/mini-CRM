@@ -10,5 +10,7 @@ conda deactivate
 
 # Ligar o servidor
 ```bash
+cd email_server/py-server/
+conda activate crm
 uvicorn main:app --reload --host 0.0.0.0 --port 7999
 ```
